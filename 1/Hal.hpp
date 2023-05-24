@@ -55,6 +55,10 @@ public:
     return static_cast<PinState>(state);
   }
 
+  inline auto set() const { write(PinState::SET); }
+
+  inline auto reset() const { write(PinState::RESET); }
+
 private:
   Port port;
   PinNumber pin;

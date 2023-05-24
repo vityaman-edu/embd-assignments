@@ -7,7 +7,9 @@
 
 auto umain() -> int {
   const auto DELAY = 500;
+
   const auto CODE = 0x05U;
+
   const auto NUMBER_SIZE = 4;
   const auto input = STM::BinaryInput<NUMBER_SIZE>({
       STM::Switch(GPIO_PIN_12),
@@ -15,7 +17,7 @@ auto umain() -> int {
       STM::Switch(GPIO_PIN_8),
       STM::Switch(GPIO_PIN_4),
   });
-  const auto ANIMATION_STATES = 14;
+
   const auto OUT_BITS = 8;
   const auto output = STM::BinaryOutput<OUT_BITS>({
       STM::Led(GPIO_PIN_12),
@@ -27,6 +29,8 @@ auto umain() -> int {
       STM::Led(GPIO_PIN_4),
       STM::Led(GPIO_PIN_3),
   });
+
+  const auto ANIMATION_STATES = 14;
   auto animation = STM::LedAnimation<ANIMATION_STATES, OUT_BITS>({
       std::bitset<OUT_BITS>("10000000"),
       std::bitset<OUT_BITS>("11000000"),
@@ -43,23 +47,37 @@ auto umain() -> int {
       std::bitset<OUT_BITS>("11100000"),
       std::bitset<OUT_BITS>("11000000"),
   });
+
   const auto button = STM::Button(GPIO_PIN_15);
+
+  const auto light = STM::TrafficLight(
+      HAL::GPIO::Pin(HAL::GPIO::Port::D(), GPIO_PIN_13),
+      HAL::GPIO::Pin(HAL::GPIO::Port::D(), GPIO_PIN_14),
+      HAL::GPIO::Pin(HAL::GPIO::Port::D(), GPIO_PIN_15)
+  );
+
   auto pause = false;
   while (true) {
     pause = pause != button.cliked();
+
     auto state = std::bitset<OUT_BITS>();
-    const auto number = input.bits();
-    if (!pause && number.to_ulong() == CODE) {
+
+    const auto number = input.bits().to_ulong();
+    if (!pause && number == CODE) {
+      light.setColor(STM::TrafficLightColor::GREEN);
       state = animation.next();
       HAL::Delay(HAL::Milliseconds(DELAY));
-    } else if (pause && number.to_ulong() == CODE) {
+    } else if (pause && number == CODE) {
+      light.setColor(STM::TrafficLightColor::YELLOW);
       state = animation.current();
       HAL::Delay(HAL::Milliseconds(DELAY));
     } else {
+      light.setColor(STM::TrafficLightColor::RED);
       animation.reset();
-      state = number.to_ullong() << 4;
+      state = number << 4U;
     }
     output.set(state);
   }
+
   return 0;
 }
