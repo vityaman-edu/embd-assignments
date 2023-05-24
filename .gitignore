@@ -1,3 +1,6 @@
+# Dist
+*.zip
+
 # Prerequisites
 *.d
 
