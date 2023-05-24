@@ -5,4 +5,5 @@ zip ../lab-$N-dist.zip \
     BinaryOutput.hpp \
     Hal.hpp \
     STM.hpp \
+    LedAnimation.hpp \
     UMain.cpp 

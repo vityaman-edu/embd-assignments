@@ -23,6 +23,12 @@ public:
     }
   }
 
+  auto clear() const -> void {
+    for (const auto& led : leds) {
+      led.turnOff();
+    }
+  }
+
 private:
   std::array<Led, N> leds;
 };
