@@ -16,7 +16,7 @@ public:
     auto bits = std::bitset<N>();
     for (std::size_t i = 0; i < N; i++) {
       const auto sw = switches[i];
-      if (sw.isOn()) {
+      if (sw.enabled()) {
         bits.set(i);
       }
     }

@@ -13,9 +13,13 @@ public:
       : states(states) {}
 
   auto next() -> std::bitset<Nbits> {
-    const auto state = states[current_state];
+    const auto state = current();
     current_state = (current_state + 1) % Nstates;
     return state;
+  }
+
+  auto current() -> std::bitset<Nbits> { //
+    return states[current_state];
   }
 
   auto reset() -> void { //
