@@ -1,4 +1,4 @@
-N=1
+N=2
 cd $N
 zip ../lab-$N-dist.zip \
     BinaryInput.hpp \
@@ -6,4 +6,4 @@ zip ../lab-$N-dist.zip \
     Hal.hpp \
     STM.hpp \
     LedAnimation.hpp \
-    UMain.cpp 
+    _sample.cpp 
